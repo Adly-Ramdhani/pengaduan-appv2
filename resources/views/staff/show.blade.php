@@ -53,7 +53,7 @@
                     </div>
                 </div>
             @endif
-            @if ($complaint->progresses && $complaint->progresses->count() > 0)
+            {{-- @if ($complaint->progresses && $complaint->progresses->count() > 0)
                 <div class="mt-4">
                     <h5>Riwayat Progres</h5>
                     <table class="table table-bordered">
@@ -63,7 +63,7 @@
                                 <th>Tanggal</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        {{-- <tbody>
                             @foreach ($complaint->progresses as $progress)
                                 <tr>
                                     <td>{{ $progress->komentar ?? '-' }}</td>
@@ -73,11 +73,11 @@
                         </tbody>
                     </table>
                 </div>
-            @endif
+            @endif --}}
             <div class="d-flex justify-content-end mt-4">
                 <a href="{{ route('pengaduan.staff.index') }}" class="btn btn-secondary">Kembali</a>
-            
-                @if (!in_array($complaint->status, ['selesai', 'tolak']))
+
+                @if (!in_array($complaint->status, ['done', 'reject']))
                     <form action="{{ route('complaints.done', $complaint->id) }}" method="POST" class="ms-2">
                         @csrf
                         <input type="hidden" name="status" value="selesai">
@@ -85,21 +85,21 @@
                             Tandai Selesai
                         </button>
                     </form>
-            
+
                     <button type="button" class="btn btn-primary ms-2" data-bs-toggle="collapse" data-bs-target="#progressForm" aria-expanded="false" aria-controls="progressForm">
                         Tambah Progress
                     </button>
                 @endif
             </div>
-            
-            
-            
+
+
+
             <!-- Form progress yang akan tampil/disembunyikan -->
             <div class="collapse mt-3" id="progressForm">
                 <div class="card card-body">
                     <form action="{{ route('complaints.progress.store') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="complaint_id" value="{{ $complaint->id }}">
+                        <input type="hidden" name="report_id" value="{{ $complaint->id }}">
                         <div class="mb-3">
                             <label for="komentar" class="form-label">Komentar Staf</label>
                             <textarea name="komentar" id="komentar" class="form-control" rows="3" placeholder="Tambahkan komentar progres..."></textarea>

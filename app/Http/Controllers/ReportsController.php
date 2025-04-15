@@ -123,7 +123,7 @@ class ReportsController extends Controller
                 'status' => 'required',
             ]);
 
-            $complaint = Complaint::findOrFail($id);
+            $complaint = Reports::findOrFail($id);
             $complaint->status = $request->status;
             $complaint->save();
 

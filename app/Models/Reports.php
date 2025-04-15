@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Regencis;
 use App\Models\Districts;
+use App\Models\response_progressess;
 use Illuminate\Database\Eloquent\Model;
 
 class Reports extends Model
@@ -56,6 +57,6 @@ class Reports extends Model
 
         public function progresses()
         {
-            return $this->hasMany(ComplaintProgres::class);
+            return $this->hasMany(response_progressess::class);
         }
 }

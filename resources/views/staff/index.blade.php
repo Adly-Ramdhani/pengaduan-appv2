@@ -42,7 +42,7 @@
                         <br>
                         {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}
                     </td>
-                    <td>{{ Str::limit($item->detail, 50) }}</td>
+                    <td>{{ Str::limit($item->description    , 50) }}</td>
                     <td>{{ $item->votes ?? 0 }}</td>
                     <td>
                         <!-- TOMBOL AKSI -->
@@ -51,7 +51,7 @@
                                 Aksi
                             </button>
                             <ul class="dropdown-menu">
-                                @if ($item->status == 'on_progress')
+                                @if ($item->status == 'done')
                                     <li>
                                         <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#modalTindakLanjuti-{{ $item->id }}">
                                             Tindak Lanjuti
@@ -80,7 +80,7 @@
                                 <form method="POST" action="{{ route('complaints.updateStatus', $item->id) }}">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" name="status" value="proses" class="btn btn-warning">Proses</button>
+                                <button type="submit" name="status" value="on_progress" class="btn btn-warning">Proses</button>
                                 <button type="submit" name="status" value="reject" class="btn btn-danger">Tolak</button>
                                 </form>
                             </div>
