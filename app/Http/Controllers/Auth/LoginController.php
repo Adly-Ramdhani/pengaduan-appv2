@@ -41,9 +41,9 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if ($user->role === 'user') {
+        if ($user->role === 'guest') {
             return redirect()->route('pengaduan.index')->with('success', 'Login berhasil!');
-        } elseif ($user->role === 'petugas') {
+        } elseif ($user->role === 'staff') {
             return redirect()->route('pengaduan.staff.index')->with('success', 'Login berhasil!');
         }
 

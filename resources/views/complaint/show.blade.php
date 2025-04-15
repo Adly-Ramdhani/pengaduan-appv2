@@ -62,7 +62,7 @@
                                 style="object-fit: contain; width: 100%; height: auto; border-radius: 8px;"
                                 alt="Gambar Pengaduan">
                         </div>
-                                        
+
                     </div>
                 @endif
 
@@ -113,9 +113,9 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Kirim Komentar</button>
                 </form>
-                
 
-            
+
+
 
                 <div class="d-flex justify-content-end mt-4">
                     <a href="{{ route('pengaduan.index') }}" class="btn btn-secondary">Kembali</a>

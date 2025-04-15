@@ -56,9 +56,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="detail" class="form-label">Detail Keluhan</label>
-                    <textarea class="form-control" id="detail" name="detail" rows="3"></textarea>
-                    <div class="invalid-feedback">Detail keluhan wajib diisi.</div>
+                    <label for="description" class="form-label">description Keluhan</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    <div class="invalid-feedback">description keluhan wajib diisi.</div>
                 </div>
 
                 <div class="mb-3">

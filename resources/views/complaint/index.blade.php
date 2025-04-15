@@ -76,10 +76,10 @@
             @foreach ($complaint as $item)
             <div class="news-card mb-3">
                 <img src="{{ url($item->image_path) }}" alt="Gambar Pengaduan">
-                <div class="news-content"> 
-                    <a href="{{ route('complaint.show', $item->id) }}" class="news-title">{{ $item->detail }}</a>   
+                <div class="news-content">
+                    <a href="{{ route('complaint.show', $item->id) }}" class="news-title">{{ $item->description }}</a>
                      <div class="news-meta mt-1">
-                        <span><i class="bi bi-eye"></i> {{ $item->views }}</span> 
+                        <span><i class="bi bi-eye"></i> {{ $item->views }}</span>
                         <span class="ms-3"><i class="bi bi-heart-fill text-danger"></i> {{ $item->likes }}</span>
                     </div>
                      <div class="category">
@@ -89,12 +89,12 @@
                     <div class="news-time mt-2">{{ $item->created_at->diffForHumans() }}</div>
                 </div>
                 <div class="d-flex align-items-center ms-3">
-                    <i class="bi bi-heart vote-icon" 
-                        data-id="{{ $item->id }}"  
-                       onclick="toggleVote(this)"></i>
-                     <span class="ms-1 vote-count">{{ $item->total_likes }}</span> 
+                    {{-- <i class="bi bi-heart vote-icon"
+                        data-id="{{ $item->id }}"
+                       onclick="toggleVote(this)"></i> --}}
+                     {{-- <span class="ms-1 vote-count">{{ $item->total_likes }}</span> --}}
                 </div>
-                
+
             </div>
             @endforeach
         </div>

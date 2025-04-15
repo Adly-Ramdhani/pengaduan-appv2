@@ -26,15 +26,15 @@
                 <tr>
                     <td>
                         <div class="d-flex align-items-center">
-                            <img src="{{ asset($item->image_path) }}" 
+                            <img src="{{ asset($item->image_path) }}"
                             onerror="this.onerror=null;this.src='https://via.placeholder.com/40';"
                             class="rounded-circle me-2" width="40" height="40" alt="User">
                             <a href="mailto:{{ $item->user->email ?? '-' }}">{{ $item->user->email ?? '-' }}</a>
                         </div>
                     </td>
-                    
+
                     <td>
-                       
+
                         {{ $item->provinces->name}},
                          {{ $item->regencie->name}},
                         {{ $item->district->name}},
@@ -51,13 +51,13 @@
                                 Aksi
                             </button>
                             <ul class="dropdown-menu">
-                                @if ($item->status == 'pending')
+                                @if ($item->status == 'on_progress')
                                     <li>
                                         <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#modalTindakLanjuti-{{ $item->id }}">
                                             Tindak Lanjuti
                                         </a>
                                     </li>
-                                @elseif ($item->status == 'proses' || $item->status == 'tolak' || $item->status == 'selesai')
+                                @elseif ($item->status == 'on_progress' || $item->status == 'reject' || $item->status == 'done')
                                     <li>
                                         <a class="dropdown-item text-primary" href="{{ route('complaints.show', $item->id) }}">
                                             Tindak Lanjuti
@@ -81,7 +81,7 @@
                                 @csrf
                                 @method('PUT')
                                 <button type="submit" name="status" value="proses" class="btn btn-warning">Proses</button>
-                                <button type="submit" name="status" value="tolak" class="btn btn-danger">Tolak</button>                                
+                                <button type="submit" name="status" value="reject" class="btn btn-danger">Tolak</button>
                                 </form>
                             </div>
                             </div>

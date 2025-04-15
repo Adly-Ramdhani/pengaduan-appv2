@@ -26,7 +26,7 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($admin as $key => $admin)
-                                    @if ($admin->role === 'petugas')
+                                    @if ($admin->role === 'staff')
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $admin->email }}</td>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <!-- Form Buat Akun Staff -->
             <div class="col-md-4">
@@ -75,7 +75,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 

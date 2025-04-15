@@ -23,7 +23,7 @@
           <span class="hide-menu">AUTH</span>
         </li> --}}
         </li>
-        @if(Auth::check() && Auth::user()->role === 'petugas')
+        @if(Auth::check() && Auth::user()->role === 'staff')
         <li class="sidebar-item">
           <a class="sidebar-link" href="{{ route('pengaduan.staff.index') }}" aria-expanded="false">
             <span>
@@ -33,7 +33,7 @@
           </a>
         </li>
         @endif
-        @if(Auth::check() && Auth::user()->role === 'user')
+        @if(Auth::check() && Auth::user()->role === 'guest')
         <li class="sidebar-item">
           <a class="sidebar-link" href="{{ route('pengaduan.index') }}" aria-expanded="false">
             <span>
@@ -43,8 +43,8 @@
           </a>
         </li>
         @endif
-        
-        @if(Auth::check() && Auth::user()->role === 'admin')
+
+        @if(Auth::check() && Auth::user()->role === 'head_staff')
         <li class="sidebar-item">
           <a class="sidebar-link" href="/" aria-expanded="false">
             <span>
@@ -62,7 +62,7 @@
             </a>
         </li>
         @endif
-        
+
       </ul>
     </nav>
     <!-- End Sidebar navigation -->
