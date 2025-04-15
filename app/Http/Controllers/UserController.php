@@ -17,18 +17,17 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validasi input
             $validated = $request->validate([
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:8',
             ]);
-    
+
             User::create([
                 'email' => $validated['email'],
-                'role' => 'petugas', 
+                'role' => 'petugas',
                 'password' => Hash::make($validated['password']),
             ]);
-    
+
             return to_route('users.index')->with('success', 'User berhasil dibuat.');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())->withInput();
@@ -45,5 +44,5 @@ class UserController extends Controller
             return to_route('users.index')->with('error', 'Gagal menghapus user: ' . $e->getMessage());
         }
     }
-    
+
 }
