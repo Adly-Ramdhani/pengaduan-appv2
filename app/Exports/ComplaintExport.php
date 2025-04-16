@@ -2,18 +2,19 @@
 
 namespace App\Exports;
 
+use App\Models\Reports;
 use App\Models\Complaint;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class ComplaintExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection()
     {
         // Ambil data pengaduan
-        $complaints = Complaint::with(['user', 'provinces', 'regencie', 'district', 'village'])->get();
+        $complaints = Reports::with(['user', 'provinces', 'regencie', 'district', 'village'])->get();
 
         // Log data pengaduan yang diambil
         Log::info('Data complaints fetched for export:', $complaints->toArray());
@@ -29,7 +30,6 @@ class ComplaintExport implements FromCollection, WithHeadings, WithMapping
             'Lokasi',
             'Tanggal Pengaduan',
             'Deskripsi',
-            'Jumlah Vote',
             'Status',
         ];
     }
@@ -41,8 +41,7 @@ class ComplaintExport implements FromCollection, WithHeadings, WithMapping
             'email' => $item->user->email ?? '-',
             'location' => $item->provinces->name . ', ' . $item->regencie->name . ', ' . $item->district->name . ', ' . $item->village->name,
             'created_at' => $item->created_at->format('d F Y'),
-            'detail' => $item->detail,
-            'votes' => $item->votes ?? 0,
+            'description' => $item->description,
             'status' => $item->status,
         ]);
 
@@ -51,8 +50,7 @@ class ComplaintExport implements FromCollection, WithHeadings, WithMapping
             $item->user->email ?? '-',
             $item->provinces->name . ', ' . $item->regencie->name . ', ' . $item->district->name . ', ' . $item->village->name,
             $item->created_at->format('d F Y'),
-            $item->detail,
-            $item->votes ?? 0,
+            $item->description,
             $item->status,
         ];
     }

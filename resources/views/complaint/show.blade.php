@@ -107,6 +107,7 @@
                 {{-- Form Tambah Komentar --}}
                 <form action="{{ route('comments.store', $complaint->id) }}" method="POST">
                     @csrf
+                    <input type="hidden" name="report_id" value="{{ $complaint->id }}"> 
                     <div class="mb-3">
                         <label for="comment" class="form-label">Komentar</label>
                         <textarea name="comment" class="form-control" rows="3" required></textarea>

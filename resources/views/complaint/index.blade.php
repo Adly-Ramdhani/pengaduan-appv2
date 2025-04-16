@@ -38,6 +38,11 @@
         font-size: 14px;
         color: #6c757d;
     }
+    .category a {
+        font-size: 13px;
+        margin-right: 5px;
+        color: #17a2b8;
+    }
     .vote-icon {
         font-size: 20px;
         cursor: pointer;
@@ -65,56 +70,84 @@
 </style>
 
 <div class="container py-4">
+
     @if(session('success'))
-    <div class="alert-success">
-        {{ session('success') }}
-    </div>
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
-    <div class="row">
-        <div class="col-md-8">
-            @foreach ($complaint as $item)
-            <div class="news-card mb-3">
-                <img src="{{ url($item->image_path) }}" alt="Gambar Pengaduan">
-                <div class="news-content">
-                    <a href="{{ route('complaint.show', $item->id) }}" class="news-title">{{ $item->description }}</a>
-                     <div class="news-meta mt-1">
-                        <span><i class="bi bi-eye"></i> {{ $item->views }}</span>
-                        <span class="ms-3"><i class="bi bi-heart-fill text-danger"></i> {{ $item->likes }}</span>
-                    </div>
-                     <div class="category">
-                        <a href="#">#{{ $item->name }}</a>
-                        <a href="#">#{{ $item->provinces->name }}</a>
-                    </div>
-                    <div class="news-time mt-2">{{ $item->created_at->diffForHumans() }}</div>
-                </div>
-                <div class="d-flex align-items-center ms-3">
-                    {{-- <i class="bi bi-heart vote-icon"
-                        data-id="{{ $item->id }}"
-                       onclick="toggleVote(this)"></i> --}}
-                     {{-- <span class="ms-1 vote-count">{{ $item->total_likes }}</span> --}}
-                </div>
-
+    <form method="GET" action="{{ route('pengaduan.index') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <select name="province" class="form-control">
+                    <option value="">-- Semua Provinsi --</option>
+                    @foreach ($provinces as $province)
+                        <option value="{{ $province }}" {{ request('province') == $province ? 'selected' : '' }}>
+                            {{ $province }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
-            @endforeach
+            <div class="col-md-6">
+                <select name="category" class="form-control">
+                    <option value="" disabled {{ request('category') == '' ? 'selected' : '' }}>Pilih Kategori...</option>
+                    <option value="sosial" {{ request('category') == 'sosial' ? 'selected' : '' }}>Sosial</option>
+                    <option value="pembangun" {{ request('category') == 'pembangun' ? 'selected' : '' }}>Pembangun</option>
+                    <option value="kejahatan" {{ request('category') == 'kejahatan' ? 'selected' : '' }}>Kejahatan</option>
+                </select>
+            </div>
+            <div class="col-md-12 mt-2">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        {{-- Pengaduan List --}}
+        <div class="col-md-8">
+            @forelse ($complaint as $item)
+                <div class="news-card mb-3">
+                    <img src="{{ url($item->image_path) }}" alt="Gambar Pengaduan">
+                    <div class="news-content">
+                        <a href="{{ route('complaint.show', $item->id) }}" class="news-title">{{ $item->description }}</a>
+
+                        <div class="category mt-1">
+                            <a href="#">#{{ $item->name }}</a>
+                            <a href="#">#{{ $item->provinces->name }}</a>
+                        </div>
+
+                        <div class="news-time mt-2">{{ $item->created_at->diffForHumans() }}</div>
+                    </div>
+                    <div class="d-flex align-items-center ms-3">
+                        {{-- Voting (Opsional) --}}
+                        {{-- <i class="bi bi-heart vote-icon" data-id="{{ $item->id }}" onclick="toggleVote(this)"></i>
+                        <span class="ms-1 vote-count">{{ $item->total_likes }}</span> --}}
+                    </div>
+                </div>
+            @empty
+                <p>Tidak ada pengaduan ditemukan.</p>
+            @endforelse
         </div>
 
+        {{-- Info Sidebar --}}
         <div class="col-md-4">
             <div class="info-box">
                 <h5><i class="bi bi-info-circle-fill text-warning"></i> Informasi Pembuatan Pengaduan</h5>
-                <ol>
-                    <li>Pengaduan bisa dibuat hanya jika Anda telah membuat akun sebelumnya.</li>
-                    <li>Keseluruhan data pada pengaduan bernilai <strong>BENAR dan DAPAT DIPERTANGGUNG JAWABKAN</strong>.</li>
-                    <li>Seluruh bagian data perlu diisi.</li>
-                    <li>Pengaduan Anda akan ditanggapi dalam 2x24 Jam.</li>
-                    <li>Periksa tanggapan Kami, pada <strong>Dashboard</strong> setelah Anda <strong>Login</strong>.</li>
-                    <li>Pengaduan dapat dilakukan pada halaman berikut: <a href="{{ route('pengaduan.create') }}">Ikuti Tautan</a></li>
+                <ol class="mt-2">
+                    <li>Pengaduan hanya dapat dibuat oleh pengguna terdaftar.</li>
+                    <li>Pastikan seluruh data yang Anda masukkan benar dan dapat dipertanggungjawabkan.</li>
+                    <li>Isi semua data yang diminta secara lengkap.</li>
+                    <li>Pengaduan akan ditanggapi dalam waktu maksimal 2x24 jam.</li>
+                    <li>Periksa tanggapan kami di dashboard Anda setelah login.</li>
+                    <li>Untuk membuat pengaduan, klik: <a href="{{ route('pengaduan.create') }}">Halaman Pengaduan</a></li>
                 </ol>
             </div>
         </div>
     </div>
 </div>
 
+{{-- Voting Script --}}
 <script>
     function toggleVote(icon) {
         let complaintId = icon.getAttribute("data-id");
@@ -142,7 +175,6 @@
                 icon.classList.add("bi-heart");
             }
 
-            // Update jumlah like
             let voteCount = icon.nextElementSibling;
             if (voteCount) {
                 voteCount.textContent = data.total_likes;
@@ -151,5 +183,4 @@
         .catch(error => console.error("Error:", error));
     }
 </script>
-
 @endsection

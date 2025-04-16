@@ -26,6 +26,6 @@ class response_progressess extends Model
     // Relasi ke model
     public function reports()
     {
-        return $this->belongsTo(Reports::class, 'reports_id');
+        return $this->belongsTo(Reports::class, 'report_id');
     }
 }

@@ -7,7 +7,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        Akun Staff Daerah JAWA BARAT
+                        Akun Staff
                     </div>
                     <div class="card-body">
                         @if(session('error'))

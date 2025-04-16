@@ -1,149 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Page</title>
+  <title>Login Pengaduan Masyarakat</title>
+
+  <!-- Bootstrap CSS & Icon -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
   <style>
-    html, body {
-        height: 100%;
-        margin: 0;
-        width: 100%;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .container-fluid {
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f8f9fa;
-        padding: 20px;
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
     }
 
-    .login-card {
-        display: flex;
-        width: 100%;
-        max-width: 1000px;
-        height: 600px;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        flex-direction: row;
+    .login-wrapper {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .login-card .left,
-    .login-card .right {
-        flex: 1;
+    .left-panel {
+      flex: 1;
+      background: linear-gradient(to bottom right, #a5d6f9, #60b5ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 50px;
+      color: white;
     }
 
-    .login-card .left {
-        background: #eef2ff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+    .left-panel .content {
+      width: 100%;
+      max-width: 400px;
     }
 
-    .login-card .right {
-        background: #4A90E2;
-        padding: 60px 40px;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    .left-panel h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      font-style: italic;
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      color: #fff;
     }
 
     .form-control {
-        border-radius: 20px;
+      border-radius: 10px;
+      border: none;
+      padding: 10px 15px;
     }
 
-    .btn-primary {
-        width: 100%;
-        border-radius: 20px;
+    .input-group-text {
+      background-color: white;
+      border: none;
+    }
+
+    .btn-login {
+      background-color: white;
+      color: #60b5ff;
+      font-weight: bold;
+      width: 100%;
+      border: 2px solid white;
+      border-radius: 10px;
+      transition: 0.3s ease;
+    }
+
+    .btn-login:hover {
+      background-color: transparent;
+      color: white;
+    }
+
+    .right-panel {
+      flex: 1;
+      background: url('img/Masyarakat.jpg') center center / cover no-repeat;
+      filter: blur(2px) brightness(0.8);
+    }
+
+    .register-link {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .register-link a {
+      color: white;
+      text-decoration: underline;
     }
 
     @media (max-width: 768px) {
-        .login-card {
-            flex-direction: column;
-            height: auto;
-        }
+      .login-wrapper {
+        flex-direction: column;
+      }
 
-        .login-card .left {
-            padding: 20px;
-            height: 200px;
-        }
+      .right-panel {
+        display: none;
+      }
 
-        .login-card .right {
-            padding: 40px 20px;
-        }
-    }
+      .left-panel {
+        width: 100%;
+        padding: 30px;
+        justify-content: flex-start;
+      }
 
-    @media (max-width: 480px) {
-        .login-card .right h3 {
-            font-size: 1.4rem;
-        }
+      .left-panel h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container-fluid">
-    <div class="login-card">
-      <div class="left">
-        <img src="img/logo-pengaduan.png" alt="Illustration" class="img-fluid" style="max-height: 200px;">
-      </div>
-      <div class="right">
-        <h3 class="text-center mb-4">Sign in to your account</h3>
-        <form action="{{ route('login') }}" method="POST">
-          @csrf
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-person"></i></span>
-              <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
-            </div>
-            @error('email')
-              <div class="text-danger">{{ $message }}</div>
-            @enderror
+
+<div class="login-wrapper">
+  <div class="left-panel">
+    <div class="content">
+      <h1>Pengaduan<br>Masyarakat</h1>
+      <form action="{{ route('login') }}" method="POST">
+        @csrf
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="bi bi-lock"></i>
-              </span>
-              <input type="password" class="form-control" id="password" name="password" required>
-              <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
-                <i class="bi bi-eye" id="eyeIcon"></i>
-              </span>
-            </div>
-            @error('password')
-              <div class="text-danger">{{ $message }}</div>
-            @enderror
+          @error('email')
+            <div class="text-danger">{{ $message }}</div>
+          @enderror
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" id="password" name="password" required>
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
-          <div class="text-center mt-3">
-            <a class="text-white" href="{{ route('register') }}">Register</a>
-          </div>
-        </form>
-      </div>
+          @error('password')
+            <div class="text-danger">{{ $message }}</div>
+          @enderror
+        </div>
+
+        <button type="submit" class="btn btn-login mt-3">Login</button>
+
+        <div class="register-link">
+          <a href="{{ route('register') }}">Belum punya akun? Daftar</a>
+        </div>
+      </form>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
-    const eyeIcon = document.getElementById('eyeIcon');
+  <div class="right-panel"></div>
+</div>
 
-    togglePassword.addEventListener('click', function () {
-      const isPassword = passwordInput.type === 'password';
-      passwordInput.type = isPassword ? 'text' : 'password';
-      eyeIcon.classList.toggle('bi-eye');
-      eyeIcon.classList.toggle('bi-eye-slash');
-    });
-  </script>
 </body>
 </html>

@@ -2,24 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Log;
 use App\Models\Reports;
-use App\Models\Provinces;
+use App\Models\Village;
 use App\Models\Regencis;
 use App\Models\Districts;
-use App\Models\Village;
+use App\Models\Provinces;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
+use App\Exports\ComplaintExport;
+use Illuminate\Support\Facades\Log;
 
 class ReportsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $complaint = Reports::with(['provinces', 'village', 'regencie'])->get();
-        return view('complaint.index', compact('complaint'));
+        try {
+            $query = Reports::with(['provinces', 'village', 'regencie']);
+    
+            if ($request->filled('province')) {
+                $query->whereHas('provinces', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->province . '%');
+                });
+            }
+    
+            if ($request->filled('category')) {
+                $query->where('name', 'like', '%' . $request->category . '%');
+            }
+    
+            $complaint = $query->latest()->get();
+            $provinces = Provinces::pluck('name'); // Ambil nama provinsi
+    
+            return view('complaint.index', compact('complaint', 'provinces'));
+    
+        } catch (\Exception $e) {
+            \Log::error('Error in Complaint Index: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memuat data pengaduan.');
+        }
     }
+    
+    
 
     /**
      * Show the form for creating a new resource.
@@ -131,6 +156,19 @@ class ReportsController extends Controller
         } catch (\Exception $e) {
             Log::error('Terjadi kesalahan: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function export()
+    {
+        try {
+            $excel = app(Excel::class);  // Atau App::make(Excel::class)
+
+            // Memanggil metode download menggunakan instance tersebut
+            return $excel->download(new ComplaintExport, 'complaints.xlsx');
+        } catch (\Exception $e) {
+            Log::error('Error Export Complaints: ' . $e->getMessage());
+            return redirect()->route('pengaduan.staff.index')->with('error', 'Gagal melakukan ekspor.');
         }
     }
 

@@ -13,6 +13,7 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <body>
   <!--  Body Wrapper -->
@@ -40,7 +41,7 @@
   <script src="{{ asset('Modernize/src/assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
   <script src="{{ asset('Modernize/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>
   <script src="{{ asset('Modernize/src/assets/js/dashboard.js') }}"></script>
-
+  @stack('scripts')
   @if(session('success'))
 <script>
     document.addEventListener("DOMContentLoaded", function () {

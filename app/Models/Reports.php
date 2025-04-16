@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reports extends Model
 {
+    protected $table = 'reports';
     protected $keyType = 'string';
         public $incrementing = false;
 
@@ -55,8 +56,13 @@ class Reports extends Model
             return $this->belongsTo(User::class, 'user_id', 'id');
         }
 
+        public function comments()
+        {
+            return $this->hasMany(Comments::class, 'report_id'); // Pastikan foreign key-nya benar
+        }
+
         public function progresses()
         {
-            return $this->hasMany(response_progressess::class);
+            return $this->hasMany(response_progressess::class, 'report_id');
         }
 }

@@ -36,11 +36,11 @@ class CommentsController extends Controller
             ]);
 
             $data['user_id'] = Auth::id();
-            $data['report_id'] = $comments->id;
+            $data['report_id'] = $request->report_id;
 
             Comments::create($data);
 
-            return redirect()->route('complaint.show', $comments->id)
+            return redirect()->route('complaint.show', $data['report_id'])
                              ->with('success', 'Komentar berhasil ditambahkan.');
         } catch (\Exception $e) {
             Log::error('Gagal menyimpan komentar: ' . $e->getMessage());
@@ -54,9 +54,12 @@ class CommentsController extends Controller
     public function show($id)
     {
         try {
-            $comments->load(['user', 'complaints']); // Eager load relasi
-                dd($comment);
+            // Ambil data komentar beserta relasinya
+            $comment = Comments::with(['user', 'report'])->findOrFail($id);
+
+            // Kirim data ke view
             return view('comments.show', compact('comment'));
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return redirect()->route('pengaduan.index')->with('error', 'Komentar tidak ditemukan.');
         } catch (\Exception $e) {

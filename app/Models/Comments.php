@@ -28,7 +28,7 @@ class Comments extends Model
         });
     }
 
-    public function reports()
+    public function report()
     {
         return $this->belongsTo(Reports::class, 'report_id');
     }

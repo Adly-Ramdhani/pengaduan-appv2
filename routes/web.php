@@ -11,6 +11,7 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\RegencisController;
 use App\Http\Controllers\DistrictsController;
 use App\Http\Controllers\StaffProvincesController;
+use App\Http\Controllers\ComplaintProgressController;
 use App\Http\Controllers\ResponseProgressessController;
 
 Route::get('/', function () {
@@ -47,6 +48,7 @@ Route::middleware(['auth', 'checkRole:staff'])->group(function () {
     Route::put('/complaints/update-status/{id}', [ReportsController::class, 'updateStatus'])->name('complaints.updateStatus');
     Route::get('/staff/{id}', [StaffProvincesController::class, 'show'])->name('complaints.show');
     Route::post('/complaints/progress', [ResponseProgressessController::class, 'store'])->name('complaints.progress.store');
+    Route::delete('/complaints/progress/{id}', [ResponseProgressessController::class, 'destroy'])->name('complaints.progress.destroy');
     Route::post('/complaints/staff/{id}', [ReportsController::class, 'done'])->name('complaints.done');
     Route::get('staff', [StaffProvincesController::class, 'index'])->name('pengaduan.staff.index');
     Route::get('/staf/export', [ReportsController::class, 'export'])->name('complaints.export');

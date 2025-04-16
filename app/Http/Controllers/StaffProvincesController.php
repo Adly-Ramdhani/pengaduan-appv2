@@ -45,12 +45,19 @@ class StaffProvincesController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $complaint = Reports::with(['provinces', 'village', 'regencie'])->findOrFail($id);
+            // Mengambil data pengaduan beserta relasi yang diperlukan
+            $complaint = Reports::with(['provinces', 'regencie', 'district', 'village']) // Pastikan relasi yang benar
+                                ->findOrFail($id); // Menangkap data pengaduan berdasarkan id
+    
+            // Jika ditemukan, tampilkan view dengan data yang telah diambil
             return view('staff.show', compact('complaint'));
         } catch (\Exception $e) {
-            return redirect()->route('pengaduan.staff.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            // Tangani error dengan memberikan pesan yang lebih jelas
+            return redirect()->route('pengaduan.staff.index')
+                             ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+    
 
     /**
      * Show the form for editing the specified resource.

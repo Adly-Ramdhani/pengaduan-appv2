@@ -17,7 +17,7 @@
                     <th>Pengirim</th>
                     <th>Lokasi & Tanggal</th>
                     <th>Deskripsi</th>
-                    <th>Jumlah Vote</th>
+                    {{-- <th>Jumlah Vote</th> --}}
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -43,50 +43,50 @@
                         {{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}
                     </td>
                     <td>{{ Str::limit($item->description    , 50) }}</td>
-                    <td>{{ $item->votes ?? 0 }}</td>
+                    {{-- <td>{{ $item->votes ?? 0 }}</td> --}}
                     <td>
                         <!-- TOMBOL AKSI -->
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                Aksi
-                            </button>
-                            <ul class="dropdown-menu">
-                                @if ($item->status == 'done')
-                                    <li>
-                                        <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#modalTindakLanjuti-{{ $item->id }}">
-                                            Tindak Lanjuti
-                                        </a>
-                                    </li>
-                                @elseif ($item->status == 'on_progress' || $item->status == 'reject' || $item->status == 'done')
-                                    <li>
-                                        <a class="dropdown-item text-primary" href="{{ route('complaints.show', $item->id) }}">
-                                            Tindak Lanjuti
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    Aksi
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @if ($item->status == 'pending')
+                                        <li>
+                                            <a class="dropdown-item text-primary" href="#" data-bs-toggle="modal" data-bs-target="#modalTindakLanjuti-{{ $item->id }}">
+                                                Tindak Lanjuti
+                                            </a>
+                                        </li>
+                                    @elseif ($item->status == 'on_progress' || $item->status == 'reject' || $item->status == 'done')
+                                        <li>
+                                            <a class="dropdown-item text-info" href="{{ route('complaints.show', $item->id) }}">
+                                                Lihat Tanggapan
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
                         </div>
-
+                        
                         <!-- MODAL TINDAK LANJUTI -->
                         <div class="modal fade" id="modalTindakLanjuti-{{ $item->id }}" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Tindak Lanjuti Pengaduan</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Tindak Lanjuti Pengaduan</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Silakan pilih tindakan untuk pengaduan ini:</p>
+                                        <form method="POST" action="{{ route('complaints.updateStatus', $item->id) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" name="status" value="on_progress" class="btn btn-warning">Proses</button>
+                                            <button type="submit" name="status" value="reject" class="btn btn-danger">Tolak</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <p>Silakan pilih tindakan untuk pengaduan ini:</p>
-                                <form method="POST" action="{{ route('complaints.updateStatus', $item->id) }}">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" name="status" value="on_progress" class="btn btn-warning">Proses</button>
-                                <button type="submit" name="status" value="reject" class="btn btn-danger">Tolak</button>
-                                </form>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
+                        </div>                        
                     </td>
                 </tr>
                 @endforeach

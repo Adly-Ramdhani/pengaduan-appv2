@@ -53,7 +53,7 @@
                     </div>
                 </div>
             @endif
-            {{-- @if ($complaint->progresses && $complaint->progresses->count() > 0)
+            @if ($complaint->progresses && $complaint->progresses->count() > 0)
                 <div class="mt-4">
                     <h5>Riwayat Progres</h5>
                     <table class="table table-bordered">
@@ -61,26 +61,38 @@
                             <tr>
                                 <th>Komentar</th>
                                 <th>Tanggal</th>
+                                @if ($complaint->status !== 'done')
+                                <th class="px-6 py-3 text-center text-sm font-medium text-gray-500">Aksi</th>
+                               @endif
                             </tr>
                         </thead>
-                        {{-- <tbody>
+                        <tbody>
                             @foreach ($complaint->progresses as $progress)
                                 <tr>
                                     <td>{{ $progress->komentar ?? '-' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($progress->created_at)->translatedFormat('d F Y H:i') }}</td>
+                                    @if ($complaint->status !== 'done')
+                                        <td class="text-center">
+                                            <form action="{{ route('complaints.progress.destroy', $progress->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus progress ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
-                            @endforeach
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
-            @endif --}}
+            @endif 
             <div class="d-flex justify-content-end mt-4">
                 <a href="{{ route('pengaduan.staff.index') }}" class="btn btn-secondary">Kembali</a>
 
                 @if (!in_array($complaint->status, ['done', 'reject']))
                     <form action="{{ route('complaints.done', $complaint->id) }}" method="POST" class="ms-2">
                         @csrf
-                        <input type="hidden" name="status" value="selesai">
+                        <input type="hidden" name="status" value="done">
                         <button type="submit" class="btn btn-success">
                             Tandai Selesai
                         </button>

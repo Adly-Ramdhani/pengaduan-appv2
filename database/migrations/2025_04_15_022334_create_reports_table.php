@@ -20,7 +20,7 @@ return new class extends Migration
             $table->id('regencis_id');
             $table->id('districts_id');
             $table->id('villages_id');
-            $table->enum('status', ['on_progress', 'done', 'reject',])->default('on_progress');
+            $table->enum('status', ['on_progress', 'done', 'reject', 'pending'])->default('pending');
             $table->string('image_path')->nullable();
             $table->boolean('is_verified')->default(false);
 
